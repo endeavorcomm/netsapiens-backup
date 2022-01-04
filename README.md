@@ -1,5 +1,5 @@
 # netsapiens-backup
-Backup script to back up from NetSapiens to AWS S3 and Google Cloud Storage.  Script is based on recommendations found [here](https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-).  I created this script so I could have a single script on all servers that had the flexibility to back up just the modules installed on that server.  Also, by leveraging S3 buckets, you can utilize Amazon's built in expiration policy and expire files as appropriate for your organization.
+Backup NetSapiens data to local, AWS S3 and Google Cloud Storage.  Script is based on recommendations found [here](https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-).  Forked from [Sean Cheesman](https://github.com/scheesman) 
 
 Output logging is enabled for the console and to syslog.  You can grep NSBACKUP and see all entries for script exection.  `grep NSBACKUP /var/log/syslog`
 
@@ -16,7 +16,10 @@ Copy the `nsbackup.conf.sample` to `nsbackup.conf`, and change relevant options 
 
 Run script manually or via [crontab](#crontab).
 
-## Requirements
+## Local Backup Requirements
+* backup_path - defaults to /tmp. Change to your desired path
+
+## Cloud Backup Requirements
 * s3cmd - install via `sudo apt-get install s3cmd`
 or
 * gsutil - install via instructions [below](#gsutil-installation)

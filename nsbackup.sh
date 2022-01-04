@@ -36,24 +36,7 @@ Valid services:
 # Begin runtime
 
 echo -e "\e[96mNetsapiens Backup Script\e[39m"
-echo -e "\e[96mSean Cheesman - https://github.com/scheesman\e[39m"
 echo -e ""
-
-# Set bucket variable to s3bucket variable value if bucket is blank. s3bucket was previous option but the addition of
-# other storage options required detatching the bucket definition from the S3 product.
-
-if [[ "$bucket" = "" ]]
-then
-    if [[ "$s3bucket" = "" ]]
-        then
-            echo -e "\e[91mError: Bucket name not set\e[39m"
-            $logmsg "Error: Bucket name not set"
-        exit
-    fi
-
-    bucket=${s3bucket}
-    echo $bucket
-fi
 
 # Error out if db user is not set
 if [ "$user" = "" ]
@@ -132,6 +115,13 @@ then
     }
 fi
 
+# Set variables for local backup processing
+if [ "$storage" = "local"]
+then
+  storageName="local directory ${backup_path}"
+  echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
+  $logmsg "Info: Storage Option set to ${storageName}"
+fi
 
 # Error out if no CLI options provided and display CLI options
 if [ $# -lt 1 ]
@@ -153,7 +143,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Core Module Config to ${outfile} and moving to ${storageName}"
       mysqldump SiPbxDomain --user=${user} --password=${password} --compact --ignore-table=SiPbxDomain.cdr --ignore-table=SiPbxDomain.subscriber_cdr --ignore-table=SiPbxDomain.audit_log --ignore-table=SiPbxDomain.callqueue_stat_cdr_helper --ignore-table=SiPbxDomain.filejournal --ignore-table=SiPbxDomain.time_zone_transition --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     cdr)
       infile="sipbxdomain-cdr_${hostname}_${date}.sql"
@@ -162,7 +155,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Core Module CDRs (25 hours) to ${outfile} and moving to ${storageName}"
       mysqldump SiPbxDomain cdr --user=${user} --password=${password}  --insert-ignore --where='cdr.time_release > DATE_SUB( UTC_TIMESTAMP( ) , INTERVAL 25 HOUR )' --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     cdr2last)
       cdr2last=`date -d "$(date +%Y-%m-1) -1 month" +%Y%m`
@@ -172,7 +168,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
       mysqldump CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --user=${user} --password=${password} --insert-ignore  --force --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     cdr2)
       cdr2current=$(date +"%Y%m")
@@ -182,7 +181,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up current CDR2 to ${outfile} and moving to ${storageName}"
       mysqldump CdrDomain ${cdr2current}_d ${cdr2current}_g ${cdr2current}_m ${cdr2current}_r ${cdr2current}_u --user=${user} --password=${password} --insert-ignore --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     messaging)
       infile="messagingdomain_${hostname}_${date}.sql"
@@ -191,7 +193,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Messaging DB to ${outfile} and moving to ${storageName}"
       mysqldump MessagingDomain --user=${user} --password=${password}  --insert-ignore --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     conference)
       infile="conferencing_${hostname}_${date}.sql"
@@ -200,7 +205,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
       mysqldump NcsDomain --user=${user} --password=${password}  --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     ndp)
       infile="ndp_${hostname}_${date}.sql"
@@ -209,14 +217,20 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Endpoints Module to ${outfile} and moving to ${storageName}"
       mysqldump NdpDomain --user=${user} --password=${password}  --ignore-table=NdpDomain.ndp_syslog --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     ndpfiles)
       outfile="ndp-files_${hostname}_${date}.tar.gz"
       echo "Backing up Endpoints Files to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Endpoints Files to ${outfile} and moving to ${storageName}"
       tar -zcvf ${backup_path}/${outfile} /usr/local/NetSapiens/ndp/frm
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     recording)
       infile="recording_${hostname}_${date}.sql"
@@ -225,7 +239,10 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Recording Module to ${outfile} and moving to ${storageName}"
       mysqldump LiCfDomain --user=${user} --password=${password}  --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      backup $outfile
+      if [ "$storage" != "local"]
+      then
+        backup $outfile
+      fi
       ;;
     *)
     echo -e "\e[91mError: Unknown option $1\e[39m"
