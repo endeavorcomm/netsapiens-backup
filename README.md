@@ -1,9 +1,9 @@
 # netsapiens-backup
-Backup NetSapiens data to local, AWS S3 and Google Cloud Storage.  Script is based on recommendations found [here](https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-).  Forked from [Sean Cheesman](https://github.com/scheesman) 
+Backup NetSapiens data to a local directory, AWS S3 or Google Cloud Storage.  Script is based on recommendations found [here](https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-).  Forked from [Sean Cheesman](https://github.com/scheesman) 
 
 Output logging is enabled for the console and to syslog.  You can grep NSBACKUP and see all entries for script exection.  `grep NSBACKUP /var/log/syslog`
 
-File structure in the buckets will be organized by hostname and service type: 
+File structure in the cloud buckets will be organized by hostname and service type: 
 ```
 . bucketname
 +-- hostname
@@ -12,7 +12,7 @@ File structure in the buckets will be organized by hostname and service type:
 ## Instructions
 Copy the script to the location of your choice.  You can download the files from github, or `git clone` it.
   
-Copy the `nsbackup.conf.sample` to `nsbackup.conf`, and change relevant options in it, such as user, password, bucket name, .s3cfg location, storage type, etc.  
+Copy the `nsbackup.conf.sample` to `nsbackup.conf`, and change relevant options in it - such as backup_path, user, password, bucket name, .s3cfg location, storage type, etc.  
 
 Run script manually or via [crontab](#crontab).
 
@@ -24,7 +24,7 @@ Run script manually or via [crontab](#crontab).
 or
 * gsutil - install via instructions [below](#gsutil-installation)
 * Amazon S3 or Google Cloud Storage bucket with appropriate permissions
-* Properly configured .s3cfg file for AWS S3 usage.  Should just require setting the access_key and secret_key.  Can be completed with `s3cmd --comfigure`.  Should output file into `/opt/.s3cfg`
+* Properly configured .s3cfg file for AWS S3 usage.  Should just require setting the access_key and secret_key.  Can be completed with `s3cmd --configure`.  Should output file into `/opt/.s3cfg`
 * gsutil configuration.  Can be completed via `gcloud init`
 
 ## Usage
@@ -33,39 +33,39 @@ The script takes up to 9 parameters.  You can specify anywhere from 1 to 6, depe
 Options: `core`, `cdr`, `cdr2`, `cdr2last`, `conference`, `messaging`, `ndp`, `ndpfiles`, `recording`
 
 ### core
-`core` backs up the Core module configuration without CDRs.
+`core` backup the Core module configuration without CDRs.
 
 ### cdr
-`cdr` backs up the Core module CDRs.  This option only backs up the last 25 hours, so you will want to run this option once per day.
+`cdr` backup the Core module CDRs.  This option only backs up the last 25 hours, so you will want to run this option once per day.
 
 ### cdr2
-`cdr2` backs up current month's CDR2 files.  This should be run every day as it only backs up the current month's tables.
+`cdr2` backup current month's CDR2 files.  This should be run every day as it only backs up the current month's tables.
 
 ### cdr2last
-`cdr2last` backs up the previous month's CDR2 tables.  This should only be run once a month as these files are huge and they do not change.
+`cdr2last` backup the previous month's CDR2 tables.  This should only be run once a month as these files are huge and they do not change.
 
 ### conference
-`conference` backs up the Conferencing module.
+`conference` backup the Conferencing module.
 
 ### messaging
-`messaging` backs up the MessagingDomain db and all included dables.  Should be run once a day.
+`messaging` backup the MessagingDomain db and all included tables.  Should be run once a day.
 
 ### ndp
-`ndp` backs up the Endpoints module.
+`ndp` backup the Endpoints module.
 
 ### ndpfiles
-`ndpfiles` backs up the /frm folder and all of its contents.  This option was added separate from the `ndp` option as you probably don't want to back this up every night.
+`ndpfiles` backup the /frm folder and all of its contents.  This option was added separate from the `ndp` option as you probably don't want to back this up every night.
 
 ### recording
-`recording` backs up the Recording module.
+`recording` backup the Recording module.
 
 ## Examples
 
-Back up all services on a single box:
+Backup all services on a single box:
 
 `nsbackup.sh core cdr conference ndp ndpfiles recording`
 
-Back up just Core (NDP) files:
+Backup just Core (NDP) files:
 
 `nsbackup.sh core cdr conference`
 
@@ -84,7 +84,7 @@ gsutil isn't included in the default Ubuntu repositories so you will have to add
 `gcloud init`
 
 ## crontab
-You will probably want to run these via crontab.  Below are the crontab entries I use, depending on the roles installed.  Just `sudo crontab -e` and insert what's relevant for you.  If you need help with crontab schedules, I highly recommend https://crontab-generator.org/.
+You will probably want to run these via crontab.  Below are example crontabs, depending on the roles installed.  Just `sudo crontab -e` and insert what's relevant for you.  If you need help with crontab schedules, checkout https://crontab-generator.org/.
 
 `0 3 * * * /usr/local/scripts/nsbackup.sh core cdr conference ndp recording > /var/log/backups.log`
 
