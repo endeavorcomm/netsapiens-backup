@@ -30,7 +30,13 @@ or
 ## Usage
 The script takes up to 9 parameters.  You can specify anywhere from 1 to 6, depending on your needs.
 
-Options: `core`, `cdr`, `cdr2`, `cdr2last`, `conference`, `messaging`, `ndp`, `ndpfiles`, `recording`
+Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messaging`, `ndp`, `ndpfiles`, `recording`
+
+### audiofiles
+`audiofiles` backup greetings and voicemails. These could use a lot of backup disk space.
+
+### conference
+`conference` backup the Conferencing module.
 
 ### core
 `core` backup the Core module configuration without CDRs.
@@ -43,9 +49,6 @@ Options: `core`, `cdr`, `cdr2`, `cdr2last`, `conference`, `messaging`, `ndp`, `n
 
 ### cdr2last
 `cdr2last` backup the previous month's CDR2 tables.  This should only be run once a month as these files are huge and they do not change.
-
-### conference
-`conference` backup the Conferencing module.
 
 ### messaging
 `messaging` backup the MessagingDomain db and all included tables.  Should be run once a day.
@@ -61,13 +64,21 @@ Options: `core`, `cdr`, `cdr2`, `cdr2last`, `conference`, `messaging`, `ndp`, `n
 
 ## Examples
 
-Backup all services on a single box:
+Backup all services, if on a single box:
 
-`nsbackup.sh core cdr conference ndp ndpfiles recording`
+`nsbackup.sh audiofiles conference core cdr ndp ndpfiles recording`
 
-Backup just Core (NDP) files:
+Backup Core and Conferencing Modules:
 
-`nsbackup.sh core cdr conference`
+`nsbackup.sh audiofiles conference core cdr`
+
+Backup Endpoints Module:
+
+`nsbackup.sh ndp ndpfiles`
+
+Backup Recording Module:
+
+`nsbackup.sh recording`
 
 ## gsutil installation
 
