@@ -28,7 +28,6 @@ or
 * gsutil configuration.  Can be completed via `gcloud init`
 
 ## Usage
-The script takes up to 9 parameters.  You can specify anywhere from 1 to 6, depending on your needs.
 
 Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messaging`, `ndp`, `ndpfiles`, `recording`
 
