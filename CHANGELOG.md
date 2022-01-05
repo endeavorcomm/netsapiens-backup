@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- option to backup audio files from /usr/local/NetSapiens/SiPbx/data, `audiofiles`
+
 ### Fixed
 
 - comparison statements, to use `==` instead of `=`
