@@ -39,6 +39,13 @@ Valid services:
 echo -e "\e[96mNetsapiens Backup Script\e[39m"
 echo -e ""
 
+# Error out if no CLI options provided and display CLI options
+if [ $# -lt 1 ]
+then
+    echo -e "$errmsg"
+    exit
+fi
+
 # Error out if db user is not set
 if [ "$user" == "" ]
 then
@@ -122,13 +129,6 @@ then
   storageName="local directory ${backup_path}"
   echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
   $logmsg "Info: Storage Option set to ${storageName}"
-fi
-
-# Error out if no CLI options provided and display CLI options
-if [ $# -lt 1 ]
-then
-    echo -e "$errmsg"
-    exit
 fi
 
 # Loop through all command line options
