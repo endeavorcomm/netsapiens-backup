@@ -23,12 +23,13 @@ Example: \e[92m$0 core,cdr,messaging\e[39m
 will back up the core, cdr, and messaging services
 
 Valid services:
-  \e[92mcore
+  \e[92maudiofiles
+  core
+  conference
   cdr
   cdr2
   cdr2last
   messaging
-  conference
   ndp
   ndpfiles
   recording\e[39m"
@@ -136,6 +137,28 @@ while [ $# -gt 0 ]; do
   # Perform action based on command line options
 
   case "$1" in
+    audiofiles)
+      outfile="audio-files_${hostname}_${date}.tar.gz"
+      echo "Backing up Audio Files to ${outfile} and moving to ${storageName}"
+      $logmsg "Backing up Audio Files to ${outfile} and moving to ${storageName}"
+      tar -zcvf ${backup_path}/${outfile} /usr/local/NetSapiens/SiPbx/data
+      if [ "$storage" != "local" ]
+      then
+        cloudbackup $outfile
+      fi
+      ;;
+    conference)
+      infile="conferencing_${hostname}_${date}.sql"
+      outfile="${infile}.gz"
+      echo "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
+      $logmsg "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
+      mysqldump NcsDomain --user=${user} --password=${password}  --result-file=${backup_path}/${infile}
+      gzip -f ${backup_path}/${infile}
+      if [ "$storage" != "local" ]
+      then
+        cloudbackup $outfile
+      fi
+      ;;
     core)
       infile="sipbxdomain_${hostname}_${date}.sql"
       outfile="${infile}.gz"
@@ -192,18 +215,6 @@ while [ $# -gt 0 ]; do
       echo "Backing up Messaging DB to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Messaging DB to ${outfile} and moving to ${storageName}"
       mysqldump MessagingDomain --user=${user} --password=${password}  --insert-ignore --result-file=${backup_path}/${infile}
-      gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local" ]
-      then
-        cloudbackup $outfile
-      fi
-      ;;
-    conference)
-      infile="conferencing_${hostname}_${date}.sql"
-      outfile="${infile}.gz"
-      echo "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
-      $logmsg "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
-      mysqldump NcsDomain --user=${user} --password=${password}  --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
