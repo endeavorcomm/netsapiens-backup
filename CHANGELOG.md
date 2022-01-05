@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Nothing much to see here!
+### Fixed
+
+- comparison statements, to use `==` instead of `=`
 
 ## [0.2.0-beta] - 2022-01-04
 
