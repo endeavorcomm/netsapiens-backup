@@ -1,7 +1,7 @@
 #!/bin/bash
 # Backs up NetSapiens files based on the article located at https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-
 #
-# Usage - Save file, set nsbackup.conf as needed, and call with the modules that needed to be backed up.
+# Usage - Save file, set nsbackup.conf as needed, and call with the modules that need to be backed up.
 # ie: nsbackup.sh core cdr conference
 
 source nsbackup.conf
@@ -39,7 +39,7 @@ echo -e "\e[96mNetsapiens Backup Script\e[39m"
 echo -e ""
 
 # Error out if db user is not set
-if [ "$user" = "" ]
+if [ "$user" == "" ]
 then
     echo -e "\e[91mError: DB user not set\e[39m"
     $logmsg "Error: DB user not set"
@@ -47,7 +47,7 @@ then
 fi
 
 # Error out if db password is not set
-if [ "$password" = "" ]
+if [ "$password" == "" ]
 then
     echo -e "\e[91mError: DB password not set\e[39m"
     $logmsg "Error: DB password not set"
@@ -55,7 +55,7 @@ then
 fi
 
 # Error out if storage option not set
-if [ "$storage" = "" ]
+if [ "$storage" == "" ]
 then
     echo -e "\e[91mError: Storage method not set\e[39m"
     $logmsg "Error: Storage method not set"
@@ -68,14 +68,14 @@ $logmsg "Info: Beginning backup"
 echo -e ""
 
 # Set Google Storage variables for processing
-if [ "$storage" = "gs" ]
+if [ "$storage" == "gs" ]
 then
     storageName="Google Cloud Storage"
     echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
     $logmsg "Info: Storage Option set to ${storageName}"
     backup() {
     gsutil cp ${backup_path}/$1 gs://${bucket}/${hostname}/
-    if [[ "$?" = "0" ]]
+    if [[ "$?" == "0" ]]
     then
         echo -e "\e[92mInfo: File uploaded successfully to ${storageName}\e[39m"
         $logmsg "Info: File uploaded successfully to ${storageName}"
@@ -88,14 +88,14 @@ then
 fi
 
 # Set Amazon S3 variables for processing
-if [ "$storage" = "s3" ]
+if [ "$storage" == "s3" ]
 then
     storageName="Amazon S3"
     echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
     $logmsg "Info: Storage Option set to ${storageName}"
 
     # Error out if Amazon S3 config file location is not set
-    if [ "$s3cfg" = "" ]
+    if [ "$s3cfg" == "" ]
     then
         echo -e "\e[91mError: .s3cfg location not set\e[39m"
         $logmsg "Error: .s3cfg location not set"
@@ -103,7 +103,7 @@ then
     fi
     backup() {
     s3cmd -c ${s3cfg} put ${backup_path}/$1 s3://${bucket}/${hostname}/
-    if [[ "$?" = "0" ]]
+    if [[ "$?" == "0" ]]
     then
         echo -e "\e[92mInfo: File uploaded successfully to ${storageName}\e[39m"
         $logmsg "Info: File uploaded successfully to ${storageName}"
@@ -116,7 +116,7 @@ then
 fi
 
 # Set variables for local backup processing
-if [ "$storage" = "local"]
+if [ "$storage" == "local" ]
 then
   storageName="local directory ${backup_path}"
   echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
@@ -143,7 +143,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Core Module Config to ${outfile} and moving to ${storageName}"
       mysqldump SiPbxDomain --user=${user} --password=${password} --compact --ignore-table=SiPbxDomain.cdr --ignore-table=SiPbxDomain.subscriber_cdr --ignore-table=SiPbxDomain.audit_log --ignore-table=SiPbxDomain.callqueue_stat_cdr_helper --ignore-table=SiPbxDomain.filejournal --ignore-table=SiPbxDomain.time_zone_transition --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -155,7 +155,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Core Module CDRs (25 hours) to ${outfile} and moving to ${storageName}"
       mysqldump SiPbxDomain cdr --user=${user} --password=${password}  --insert-ignore --where='cdr.time_release > DATE_SUB( UTC_TIMESTAMP( ) , INTERVAL 25 HOUR )' --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -168,7 +168,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
       mysqldump CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --user=${user} --password=${password} --insert-ignore  --force --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -181,7 +181,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up current CDR2 to ${outfile} and moving to ${storageName}"
       mysqldump CdrDomain ${cdr2current}_d ${cdr2current}_g ${cdr2current}_m ${cdr2current}_r ${cdr2current}_u --user=${user} --password=${password} --insert-ignore --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -193,7 +193,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Messaging DB to ${outfile} and moving to ${storageName}"
       mysqldump MessagingDomain --user=${user} --password=${password}  --insert-ignore --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -205,7 +205,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
       mysqldump NcsDomain --user=${user} --password=${password}  --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -217,7 +217,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Endpoints Module to ${outfile} and moving to ${storageName}"
       mysqldump NdpDomain --user=${user} --password=${password}  --ignore-table=NdpDomain.ndp_syslog --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -227,7 +227,7 @@ while [ $# -gt 0 ]; do
       echo "Backing up Endpoints Files to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Endpoints Files to ${outfile} and moving to ${storageName}"
       tar -zcvf ${backup_path}/${outfile} /usr/local/NetSapiens/ndp/frm
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
@@ -239,7 +239,7 @@ while [ $# -gt 0 ]; do
       $logmsg "Backing up Recording Module to ${outfile} and moving to ${storageName}"
       mysqldump LiCfDomain --user=${user} --password=${password}  --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local"]
+      if [ "$storage" != "local" ]
       then
         backup $outfile
       fi
