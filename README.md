@@ -51,7 +51,7 @@ Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messagi
 `cdr2last` backup the previous month's CDR2 tables.  This should only be run once a month as these files are huge and they do not change.
 
 ### messaging
-`messaging` backup the MessagingDomain db and all included tables.  Should be run once a day.
+`messaging` backup the MessagingDomain db (Chat/SMS) and all included tables.  Should be run once a day.
 
 ### ndp
 `ndp` backup the Endpoints module.
@@ -66,11 +66,11 @@ Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messagi
 
 Backup all services, if on a single box:
 
-`nsbackup.sh audiofiles conference core cdr ndp ndpfiles recording`
+`nsbackup.sh audiofiles conference core cdr messaging ndp ndpfiles recording`
 
 Backup Core and Conferencing Modules:
 
-`nsbackup.sh audiofiles conference core cdr`
+`nsbackup.sh audiofiles conference core cdr messaging`
 
 Backup Endpoints Module:
 
