@@ -73,7 +73,7 @@ then
     storageName="Google Cloud Storage"
     echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
     $logmsg "Info: Storage Option set to ${storageName}"
-    backup() {
+    cloudbackup() {
     gsutil cp ${backup_path}/$1 gs://${bucket}/${hostname}/
     if [[ "$?" == "0" ]]
     then
@@ -101,7 +101,7 @@ then
         $logmsg "Error: .s3cfg location not set"
         exit
     fi
-    backup() {
+    cloudbackup() {
     s3cmd -c ${s3cfg} put ${backup_path}/$1 s3://${bucket}/${hostname}/
     if [[ "$?" == "0" ]]
     then
@@ -145,7 +145,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     cdr)
@@ -157,7 +157,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     cdr2last)
@@ -170,7 +170,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     cdr2)
@@ -183,7 +183,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     messaging)
@@ -195,7 +195,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     conference)
@@ -207,7 +207,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     ndp)
@@ -219,7 +219,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     ndpfiles)
@@ -229,7 +229,7 @@ while [ $# -gt 0 ]; do
       tar -zcvf ${backup_path}/${outfile} /usr/local/NetSapiens/ndp/frm
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     recording)
@@ -241,7 +241,7 @@ while [ $# -gt 0 ]; do
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
-        backup $outfile
+        cloudbackup $outfile
       fi
       ;;
     *)
