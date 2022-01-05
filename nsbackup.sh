@@ -183,19 +183,6 @@ while [ $# -gt 0 ]; do
         cloudbackup $outfile
       fi
       ;;
-    cdr2last)
-      cdr2last=`date -d "$(date +%Y-%m-1) -1 month" +%Y%m`
-      infile="cdrdomain-cdr2last_${hostname}_${cdr2last}.sql"
-      outfile="${infile}.gz"
-      echo "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
-      $logmsg "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
-      mysqldump CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --user=${user} --password=${password} --insert-ignore  --force --result-file=${backup_path}/${infile}
-      gzip -f ${backup_path}/${infile}
-      if [ "$storage" != "local" ]
-      then
-        cloudbackup $outfile
-      fi
-      ;;
     cdr2)
       cdr2current=$(date +"%Y%m")
       infile="cdrdomain-cdr2_${hostname}_${cdr2current}.sql"
@@ -203,6 +190,19 @@ while [ $# -gt 0 ]; do
       echo "Backing up current CDR2 to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up current CDR2 to ${outfile} and moving to ${storageName}"
       mysqldump CdrDomain ${cdr2current}_d ${cdr2current}_g ${cdr2current}_m ${cdr2current}_r ${cdr2current}_u --user=${user} --password=${password} --insert-ignore --result-file=${backup_path}/${infile}
+      gzip -f ${backup_path}/${infile}
+      if [ "$storage" != "local" ]
+      then
+        cloudbackup $outfile
+      fi
+      ;;
+    cdr2last)
+      cdr2last=`date -d "$(date +%Y-%m-1) -1 month" +%Y%m`
+      infile="cdrdomain-cdr2last_${hostname}_${cdr2last}.sql"
+      outfile="${infile}.gz"
+      echo "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
+      $logmsg "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
+      mysqldump CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --user=${user} --password=${password} --insert-ignore  --force --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
