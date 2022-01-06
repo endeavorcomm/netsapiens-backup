@@ -36,8 +36,7 @@ Valid services:
 
 # Begin runtime
 
-echo -e "\e[96mNetsapiens Backup Script\e[39m"
-echo -e ""
+echo -e "\e[96mNetsapiens Backup Script\e[39m\n"
 
 # Error out if no CLI options provided and display CLI options
 if [ $# -lt 1 ]
@@ -71,7 +70,7 @@ then
 fi
 
 
-echo -e "\e[92mInfo: Beginning backup\e[39m"
+echo -e "\e[92mInfo: Beginning backup\e[39m\n"
 $logmsg "Info: Beginning backup"
 echo -e ""
 
@@ -256,15 +255,14 @@ while [ $# -gt 0 ]; do
       fi
       ;;
     *)
-    echo -e "\e[91mError: Unknown option $1\e[39m"
+    echo -e "\e[91mError: Unknown option $1\e[39m\n"
     $logmsg "Error: Unknown options specified"
     echo -e "$errmsg"
 
   esac
   shift
 
-echo -e ""
-echo -e "\e[92mInfo: Backup complete\e[39m"
+echo -e "\e[92mInfo: Backup complete\e[39m\n\n"
 $logmsg "Info: Backup complete"
 
 done
