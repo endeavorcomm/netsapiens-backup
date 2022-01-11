@@ -4,6 +4,7 @@
 # Usage - Save file, set nsbackup.conf as needed, and call with the modules that need to be backed up.
 # ie: nsbackup.sh core cdr conference
 
+cd "$(dirname "$0")";
 source nsbackup.conf
 
 ################################################################################
