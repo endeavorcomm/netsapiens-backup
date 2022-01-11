@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- script bash reference from `!/bin/bash` to `!/usr/bin/env bash`
+- script and config files bash reference from `!/bin/bash` to `!/usr/bin/env bash`
 
 ### Fixed
 
