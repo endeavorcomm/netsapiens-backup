@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - option to backup audio files from /usr/local/NetSapiens/SiPbx/data, `audiofiles`
 
+### Changed
+
+- script bash reference from `!/bin/bash` to `!/usr/bin/env bash`
+
 ### Fixed
 
 - comparison statements, to use `==` instead of `=`
