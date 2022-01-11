@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - option to backup audio files from /usr/local/NetSapiens/SiPbx/data, `audiofiles`
+- change directory command to script, to ensure the config file is sourced properly
 
 ### Changed
 
