@@ -12,7 +12,7 @@ File structure in the cloud buckets will be organized by hostname and service ty
 ## Instructions
 Copy the script to the location of your choice.  You can download the files from github, or `git clone` it.
   
-Copy the `nsbackup.conf.sample` to `nsbackup.conf`, and change relevant options in it - such as backup_path, user, password, bucket name, .s3cfg location, storage type, etc.  
+Copy the `nsbackup.conf.sample` to `nsbackup.conf`, and change relevant options in it - such as backup_path, user, password, keepdays, bucket name, .s3cfg location, storage type, etc.  
 
 Run script manually or via [crontab](#crontab).
 
