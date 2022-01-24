@@ -14,7 +14,7 @@ source nsbackup.conf
 ################################################################################
 
 # Set default file permissions
- umask 177
+umask 177
 
 # Define error message for modular display of errors
 errmsg=$"
@@ -70,16 +70,14 @@ then
     exit
 fi
 
-
-echo -e "\e[92mInfo: Beginning backup\e[39m\n"
+echo -e "\e[92mInfo: Beginning backup\e[39m"
 $logmsg "Info: Beginning backup"
-echo -e ""
 
 # Set Google Storage variables for processing
 if [ "$storage" == "gs" ]
 then
     storageName="Google Cloud Storage"
-    echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
+    echo -e "\e[92mInfo: Storage option set to \e[92m${storageName}\e[39m\n"
     $logmsg "Info: Storage Option set to ${storageName}"
     cloudbackup() {
     gsutil cp ${backup_path}/$1 gs://${bucket}/${hostname}/
@@ -99,7 +97,7 @@ fi
 if [ "$storage" == "s3" ]
 then
     storageName="Amazon S3"
-    echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
+    echo -e "\e[92mInfo: Storage option set to \e[92m${storageName}\e[39m\n"
     $logmsg "Info: Storage Option set to ${storageName}"
 
     # Error out if Amazon S3 config file location is not set
@@ -127,7 +125,7 @@ fi
 if [ "$storage" == "local" ]
 then
   storageName="local directory ${backup_path}"
-  echo -e "\e[92mStorage option set to \e[92m${storageName}\e[39m"
+  echo -e "\e[92mInfo: Storage option set to \e[92m${storageName}\e[39m\n"
   $logmsg "Info: Storage Option set to ${storageName}"
 fi
 
@@ -267,3 +265,10 @@ echo -e "\e[92mInfo: Backup complete\e[39m\n\n"
 $logmsg "Info: Backup complete"
 
 done
+
+echo -e "\e[92mInfo: Removing backups older than $keepdays days...\e[39m"
+$logmsg "Info: Removing older backups..."
+DATE=$(date +%Y-%m-%d)
+find ${backup_path} -type f -mtime +${keepdays} -exec rm -f {} \;
+echo -e "\e[92mInfo: Removal complete\e[39m\n"
+$logmsg "Info: Removal complete"
