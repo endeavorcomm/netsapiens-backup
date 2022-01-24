@@ -268,7 +268,6 @@ done
 
 echo -e "\e[92mInfo: Removing backups older than $keepdays days...\e[39m"
 $logmsg "Info: Removing older backups..."
-DATE=$(date +%Y-%m-%d)
 find ${backup_path} -type f -mtime +${keepdays} -exec rm -f {} \;
 echo -e "\e[92mInfo: Removal complete\e[39m\n"
 $logmsg "Info: Removal complete"
