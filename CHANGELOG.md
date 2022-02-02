@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Nothing to see here
+### Added
+
+- logic to ensure older backups are only removed if the `storage` option is set to `"local"`
+
+### Changed
+
+- removal of backups to end of script, to ensure it is only run once a new backup is done
+
+### Fixed
+
+- `keepdays` logic calculation, so it actually keeps this number of days
 
 ## [0.3.0-beta] - 2022-01-24
 
