@@ -16,6 +16,9 @@ source nsbackup.conf
 # Set default file permissions
 umask 177
 
+# Calculate days to keep older backups
+days=$((keepdays-1))
+
 # Define error message for modular display of errors
 errmsg=$"
 Usage: \e[92m$0 [services]\e[39m
@@ -268,6 +271,6 @@ done
 
 echo -e "\e[92mInfo: Removing backups older than $keepdays days...\e[39m"
 $logmsg "Info: Removing older backups..."
-find ${backup_path} -type f -mtime +${keepdays} -exec rm -f {} \;
+find ${backup_path} -type f -mtime +${days} -exec rm -f {} \;
 echo -e "\e[92mInfo: Removal complete\e[39m\n"
 $logmsg "Info: Removal complete"
