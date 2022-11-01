@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Nothing to see here
+### Added
+
+- `stats` command. Backup the Call Queue Stats table. This is similar to the `cdr` command; and should be run on all core servers.
+
+### Changed
+
+- mysqldump commands, to equal the commands on the NetSapiens article. There were a few additional flags for some.
 
 ## [0.4.0-beta] - 2022-02-02
 
