@@ -29,7 +29,7 @@ or
 
 ## Usage
 
-Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messaging`, `ndp`, `ndpfiles`, `recording`
+Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messaging`, `ndp`, `ndpfiles`, `recording`, `stats`
 
 ### audiofiles
 `audiofiles` backup greetings and voicemails. These could use a lot of backup disk space.
@@ -61,6 +61,9 @@ Options: `audiofiles`, `conference`, `core`, `cdr`, `cdr2`, `cdr2last`, `messagi
 ### recording
 `recording` backup the Recording module.
 
+### stats
+`stats` backup the Call Queue Stats table.
+
 ## Examples
 
 Backup all services, if on a single box:
@@ -69,7 +72,9 @@ Backup all services, if on a single box:
 
 Backup Core and Conferencing Modules:
 
-`nsbackup.sh audiofiles conference core cdr messaging`
+`nsbackup.sh audiofiles conference core cdr messaging stats`
+
+> `audiofiles` typically only needs run on one core server, since the files are sync'd across cores.
 
 Backup Endpoints Module:
 
@@ -96,6 +101,6 @@ gsutil isn't included in the default Ubuntu repositories so you will have to add
 ## crontab
 You will probably want to run these via crontab.  Below are example crontabs, depending on the roles installed.  Just `sudo crontab -e` and insert what's relevant for you.  If you need help with crontab schedules, checkout https://crontab-generator.org/.
 
-`0 3 * * * /usr/local/scripts/nsbackup.sh core cdr conference ndp recording > /var/log/backups.log`
+`0 3 * * * /usr/local/scripts/nsbackup.sh audiofiles conference core cdr messaging stats > /var/log/backups.log`
 
 `30 0 * * 0 /usr/local/scripts/nsbackup.sh ndpfiles > /var/log/backups.log`
