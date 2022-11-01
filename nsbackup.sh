@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Backs up NetSapiens files based on the article located at https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-
-#
 # Usage - Save file, set nsbackup.conf as needed, and call with the modules that need to be backed up.
 # ie: nsbackup.sh core cdr conference
 

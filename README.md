@@ -1,5 +1,5 @@
 # netsapiens-backup
-Backup NetSapiens data to a local directory, AWS S3 or Google Cloud Storage.  Script is based on recommendations found [here](https://help.netsapiens.com/hc/en-us/articles/205235690-What-Commands-Should-I-Execute-For-Scheduled-Backups-).  Forked from [Sean Cheesman](https://github.com/scheesman) 
+Backup NetSapiens data to a local directory, AWS S3 or Google Cloud Storage.  Script is based on recommendations found [here](https://documentation.netsapiens.com/164880-system/854443-what-commands-should-i-execute-for-scheduled-backups).  Forked from [Sean Cheesman](https://github.com/scheesman) 
 
 Output logging is enabled for the console and to syslog.  You can grep NSBACKUP and see all entries for script exection.  `grep NSBACKUP /var/log/syslog`
 
