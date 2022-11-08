@@ -151,7 +151,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Conferencing Module to ${outfile} and moving to ${storageName}"
-      mysqldump NcsDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} NcsDomain --skip-add-drop-table --no-create-info --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -163,7 +163,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Core Module Config to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Core Module Config to ${outfile} and moving to ${storageName}"
-      mysqldump SiPbxDomain --user=${user} --password=${password} --compact --ignore-table=SiPbxDomain.cdr --ignore-table=SiPbxDomain.subscriber_cdr --ignore-table=SiPbxDomain.audit_log --ignore-table=SiPbxDomain.callqueue_stat_cdr_helper --ignore-table=SiPbxDomain.filejournal --ignore-table=SiPbxDomain.time_zone_transition --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} SiPbxDomain --compact --ignore-table=SiPbxDomain.cdr --ignore-table=SiPbxDomain.subscriber_cdr --ignore-table=SiPbxDomain.audit_log --ignore-table=SiPbxDomain.callqueue_stat_cdr_helper --ignore-table=SiPbxDomain.filejournal --ignore-table=SiPbxDomain.time_zone_transition --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -175,7 +175,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Core Module CDRs (25 hours) to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Core Module CDRs (25 hours) to ${outfile} and moving to ${storageName}"
-      mysqldump SiPbxDomain cdr --user=${user} --password=${password} --skip-add-drop-table --no-create-info --insert-ignore --where='cdr.time_release > DATE_SUB( UTC_TIMESTAMP( ) , INTERVAL 25 HOUR )' --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} SiPbxDomain cdr --skip-add-drop-table --no-create-info --insert-ignore --where='cdr.time_release > DATE_SUB( UTC_TIMESTAMP( ) , INTERVAL 25 HOUR )' --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -188,7 +188,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up current CDR2 to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up current CDR2 to ${outfile} and moving to ${storageName}"
-      mysqldump CdrDomain ${cdr2current}_d ${cdr2current}_g ${cdr2current}_m ${cdr2current}_r ${cdr2current}_u --user=${user} --password=${password} --insert-ignore --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} CdrDomain ${cdr2current}_d ${cdr2current}_g ${cdr2current}_m ${cdr2current}_r ${cdr2current}_u --insert-ignore --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -201,7 +201,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up previous month's CDR2 to ${outfile} and moving to ${storageName}"
-      mysqldump CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --user=${user} --password=${password} --insert-ignore --force --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --insert-ignore --force --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -213,7 +213,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Messaging DB to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Messaging DB to ${outfile} and moving to ${storageName}"
-      mysqldump MessagingDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} MessagingDomain --skip-add-drop-table --no-create-info --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -225,7 +225,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Endpoints Module to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Endpoints Module to ${outfile} and moving to ${storageName}"
-      mysqldump NdpDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --ignore-table=NdpDomain.ndp_syslog --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} NdpDomain --skip-add-drop-table --no-create-info --ignore-table=NdpDomain.ndp_syslog --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
@@ -247,7 +247,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Recording Module to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Recording Module to ${outfile} and moving to ${storageName}"
-      mysqldump LiCfDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} LiCfDomain --skip-add-drop-table --no-create-info --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
