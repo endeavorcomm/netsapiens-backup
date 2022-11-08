@@ -259,7 +259,7 @@ while [ $# -gt 0 ]; do
       outfile="${infile}.gz"
       echo "Backing up Call Queue Stats to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Call Queue Stats to ${outfile} and moving to ${storageName}"
-      mysqldump -p<PASSWORD> -u<USER> SiPbxDomain callqueue_stat_cdr_helper --skip-add-drop-table --no-create-info --insert-ignore --result-file=${backup_path}/${infile}
+      mysqldump --user=${user} --password=${password} SiPbxDomain callqueue_stat_cdr_helper --skip-add-drop-table --no-create-info --insert-ignore --result-file=${backup_path}/${infile}
       gzip -f ${backup_path}/${infile}
       if [ "$storage" != "local" ]
       then
