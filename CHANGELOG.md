@@ -74,7 +74,8 @@ Nothing to see here.
 
 Everything by [Sean Cheesman](https://github.com/scheesman)
 
-[Unreleased]: https://github.com/endeavorcomm/netsapiens-backup/compare/v0.5.0-beta...HEAD
+[Unreleased]: https://github.com/endeavorcomm/netsapiens-backup/compare/v0.6.0-beta...HEAD
+[0.6.0-beta]: https://github.com/endeavorcomm/netsapiens-backup/compare/v0.5.0-beta...v0.6.0-beta
 [0.5.0-beta]: https://github.com/endeavorcomm/netsapiens-backup/compare/v0.4.0-beta...v0.5.0-beta
 [0.4.0-beta]: https://github.com/endeavorcomm/netsapiens-backup/compare/v0.3.0-beta...v0.4.0-beta
 [0.3.0-beta]: https://github.com/endeavorcomm/netsapiens-backup/compare/v0.2.0-beta...v0.3.0-beta
