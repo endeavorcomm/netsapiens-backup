@@ -25,7 +25,8 @@ Example: \e[92m$0 core,cdr,messaging\e[39m
 will back up the core, cdr, and messaging services
 
 Valid services:
-  \e[92maudiofiles
+  \e[92mapi
+  audiofiles
   core
   conference
   cdr
@@ -136,6 +137,18 @@ while [ $# -gt 0 ]; do
   # Perform action based on command line options
 
   case "$1" in
+    api)
+      infile="api_${hostname}_${date}.sql"
+      outfile="${infile}.gz"
+      echo "Backing up NsApi Module to ${outfile} and moving to ${storageName}"
+      $logmsg "Backing up NsApi Module to ${outfile} and moving to ${storageName}"
+      mysqldump --user=${user} --password=${password} NsApi oauth_clients multifactor_auth subscriptions --skip-add-drop-table --no-create-info --insert-ignore --result-file=${backup_path}/${infile}
+      gzip -f ${backup_path}/${infile}
+      if [ "$storage" != "local" ]
+      then
+        cloudbackup $outfile
+      fi
+      ;;
     audiofiles)
       outfile="audio-files_${hostname}_${date}.tar.gz"
       echo "Backing up Audio Files to ${outfile} and moving to ${storageName}"
