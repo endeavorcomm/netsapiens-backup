@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing to see here.
 
+## [0.6.0-beta] - 2023-9-22
+
+### Added
+
+- `api` command. Backup the NsApi table on all your core servers.
+
 ## [0.5.0-beta] - 2022-11-08
 
 ### Added
