@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Nothing to see here.
+### Fixed
+
+- remove verbose (`v`) param for tar'ing files.
 
 ## [0.6.0-beta] - 2023-9-22
 
