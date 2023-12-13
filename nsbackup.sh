@@ -153,7 +153,7 @@ while [ $# -gt 0 ]; do
       outfile="audio-files_${hostname}_${date}.tar.gz"
       echo "Backing up Audio Files to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Audio Files to ${outfile} and moving to ${storageName}"
-      tar -zcvf ${backup_path}/${outfile} /usr/local/NetSapiens/SiPbx/data
+      tar -zcf ${backup_path}/${outfile} /usr/local/NetSapiens/SiPbx/data
       if [ "$storage" != "local" ]
       then
         cloudbackup $outfile
@@ -249,7 +249,7 @@ while [ $# -gt 0 ]; do
       outfile="ndp-files_${hostname}_${date}.tar.gz"
       echo "Backing up Endpoints Files to ${outfile} and moving to ${storageName}"
       $logmsg "Backing up Endpoints Files to ${outfile} and moving to ${storageName}"
-      tar -zcvf ${backup_path}/${outfile} /usr/local/NetSapiens/ndp/frm
+      tar -zcf ${backup_path}/${outfile} /usr/local/NetSapiens/ndp/frm
       if [ "$storage" != "local" ]
       then
         cloudbackup $outfile
